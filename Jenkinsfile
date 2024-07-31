@@ -5,6 +5,11 @@ pipeline {
         maven 'Maven' // Asegúrate de que este nombre coincida con la configuración en Jenkins
     }
 
+    environment {
+        // Utiliza el ID de las credenciales configuradas en Jenkins para SonarQube
+        SONAR_TOKEN = credentials('sonar-qube-key') // Reemplaza 'sonar-token-id' con el ID de tus credenciales
+    }
+
     stages {
         stage('SCM') {
             steps {
@@ -17,7 +22,7 @@ pipeline {
                 script {
                     def mvn = tool name: 'Maven', type: 'hudson.tasks.Maven$MavenInstallation'
                     withSonarQubeEnv('SonarQube') {
-                        sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=sonar-qube -Dsonar.projectName='con-jenkins'"
+                        sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=sonar-qube -Dsonar.projectName='con-jenkins' -Dsonar.login=${SONAR_TOKEN}"
                     }
                 }
             }
