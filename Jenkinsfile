@@ -24,7 +24,7 @@ pipeline {
                 script {
                     def mvn = tool name: 'Default Maven', type: 'hudson.tasks.Maven$MavenInstallation'
                     withSonarQubeEnv('Sonar') {
-                        sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=sonar-qube -Dsonar.projectName='con-jenkins' -Dsonar.login=${sonar-qube-key}"
+                        sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=sonar-qube-key -Dsonar.projectName='con-jenkins' -Dsonar.login=${sonar-qube-key}"
                     }
                 }
             }
