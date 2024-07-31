@@ -24,7 +24,7 @@ pipeline {
                 script {
                     def mvn = tool name: 'Default Maven', type: 'hudson.tasks.Maven$MavenInstallation'
                     withSonarQubeEnv('Sonar') {
-                        sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=sonar-qube -Dsonar.projectName='con-jenkins' -Dsonar.login=${sonar-qube-key}"
+                        sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=sonar-qube -Dsonar.projectName='con-jenkins' -Dsonar.login=${env.sonar_qube_key}"
                     }
                 }
             }
@@ -43,8 +43,8 @@ pipeline {
                             -Dfile=target/my-app-1.0-SNAPSHOT.jar \
                             -DrepositoryId=nexus \
                             -Durl=http://localhost:8081/repository/maven-releases/ \
-                            -Dusername=${NEXUS_USERNAME} \
-                            -Dpassword=${NEXUS_PASSWORD}
+                            -Dusername=${env.NEXUS_USERNAME} \
+                            -Dpassword=${env.NEXUS_PASSWORD}
                         """
                     }
                 }
