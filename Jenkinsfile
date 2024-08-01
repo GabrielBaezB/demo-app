@@ -27,6 +27,29 @@ pipeline {
                 }
             }
         }
+        stage(‘Upload Artifact’){
+            steps{
+                nexusArtifactUploader(
+                    nexusVersion: ‘nexus3’,
+                    protocol: ‘http’,
+                    nexusUrl: ‘localhost:8081/repository/nexus-test/’,
+                    groupId: ‘QA’,
+                    version: “${env.BUILD_ID}-${env.BUILD_TIMESTAMP}”,
+                    repository: ‘nexus-test’,
+                    credentialsId: ‘NexusLogin’,
+                    artifacts: [
+                        [artifactId: ‘webApp’,
+                        classifier: ‘’,
+                        file: ‘web/target/time-tracker-web-0.5.0-SNAPSHOT.war’,
+                        type: ‘war’],
+                        [artifactId: ‘coreApp’,
+                        classifier: ‘’,
+                        file: ‘core/target/time-tracker-core-0.5.0-SNAPSHOT.jar’,
+                        type: ‘jar’]
+                        ]
+                    )
+                }
+        }
 
         stage('Build') {
             steps {
