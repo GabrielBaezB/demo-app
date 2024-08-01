@@ -40,11 +40,11 @@ pipeline {
                     artifacts: [
                         [artifactId: 'webApp',
                         classifier: '',
-                        file: 'web/target/time-tracker-web-0.5.0-SNAPSHOT.war',
+                        file: 'target/demo-app.war',
                         type: 'war'],
                         [artifactId: 'coreApp',
                         classifier: '',
-                        file: 'core/target/time-tracker-core-0.5.0-SNAPSHOT.jar',
+                        file: 'target/demo-app.jar',
                         type: 'jar']
                         ]
                     )
