@@ -31,21 +31,26 @@ pipeline {
         stage('Upload Artifact') {
             steps {
                 script {
-                    nexusArtifactUploader(
-                        nexusVersion: 'nexus3',
-                        protocol: 'http',
-                        nexusUrl: 'localhost:8081', // Asegúrate de que esta URL sea correcta
-                        groupId: 'QA',
-                        version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
-                        repository: 'nexus-test',
-                        credentialsId: 'NexusLogin',
-                        artifacts: [
-                            [artifactId: 'webApp',
-                            classifier: '',
-                            file: 'target/demo-app.war',
-                            type: 'war']
-                        ]
-                    )
+                    try {
+                        nexusArtifactUploader(
+                            nexusVersion: 'nexus3',
+                            protocol: 'http',
+                            nexusUrl: 'http://192.168.173.189:8081', // Asegúrate de que esta URL sea correcta
+                            groupId: 'QA',
+                            version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
+                            repository: 'nexus-test',
+                            credentialsId: 'NexusLogin',
+                            artifacts: [
+                                [artifactId: 'webApp',
+                                classifier: '',
+                                file: 'target/demo-app.war',
+                                type: 'war']
+                            ]
+                        )
+                    } catch (Exception e) {
+                        echo "Error uploading artifact: ${e.message}"
+                        throw e
+                    }
                 }
             }
         }
