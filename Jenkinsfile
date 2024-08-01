@@ -6,8 +6,8 @@ pipeline {
     }
 
     environment {
-        // Utiliza el ID de las credenciales configuradas en Jenkins para SonarQube
-        SONAR_TOKEN = credentials('sonar-qube-key') // Reemplaza 'sonar-token-id' con el ID de tus credenciales
+        SONAR_TOKEN = credentials('sonar-qube-key') // Reemplaza 'sonar-qube-key' con el ID de tus credenciales
+        BUILD_TIMESTAMP = new Date().format("yyyyMMdd-HHmmss")
     }
 
     stages {
@@ -27,24 +27,27 @@ pipeline {
                 }
             }
         }
-        stage('Upload Artifact'){
-            steps{
-                nexusArtifactUploader(
-                    nexusVersion: 'nexus3',
-                    protocol: 'http',
-                    nexusUrl: 'localhost:8081',
-                    groupId: 'QA',
-                    version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
-                    repository: 'nexus-test',
-                    credentialsId: 'NexusLogin',
-                    artifacts: [
-                        [artifactId: 'webApp',
-                        classifier: '',
-                        file: 'target/demo-app.war',
-                        type: 'war'],
+
+        stage('Upload Artifact') {
+            steps {
+                script {
+                    nexusArtifactUploader(
+                        nexusVersion: 'nexus3',
+                        protocol: 'http',
+                        nexusUrl: 'localhost:8081', // Asegúrate de que esta URL sea correcta
+                        groupId: 'QA',
+                        version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
+                        repository: 'nexus-test',
+                        credentialsId: 'NexusLogin',
+                        artifacts: [
+                            [artifactId: 'webApp',
+                            classifier: '',
+                            file: 'target/demo-app.war',
+                            type: 'war']
                         ]
                     )
                 }
+            }
         }
 
         stage('Build') {
