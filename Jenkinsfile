@@ -42,10 +42,6 @@ pipeline {
                         classifier: '',
                         file: 'target/demo-app.war',
                         type: 'war'],
-                        [artifactId: 'coreApp',
-                        classifier: '',
-                        file: 'target/demo-app.jar',
-                        type: 'jar']
                         ]
                     )
                 }
