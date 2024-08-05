@@ -35,7 +35,7 @@ pipeline {
                         nexusArtifactUploader(
                             nexusVersion: 'nexus3',
                             protocol: 'http',
-                            nexusUrl: '192.168.173.189:8081', // Asegúrate de que esta URL sea correcta
+                            nexusUrl: '192.168.3.189:8081', // Asegúrate de que esta URL sea correcta
                             groupId: 'QA',
                             version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
                             repository: 'nexus-test',
