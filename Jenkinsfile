@@ -92,5 +92,5 @@ pipeline {
                 slackSend (channel: '#slack-notificaciones', message: "Pipeline abortado: ${env.JOB_NAME} ${env.BUILD_NUMBER} - ${env.BUILD_URL}")
             }
         }
-    }
 }
+
