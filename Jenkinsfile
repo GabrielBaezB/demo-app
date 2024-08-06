@@ -1,6 +1,6 @@
 pipeline {
     agent any
-
+    
     tools {
         maven 'Maven' // Asegúrate de que este nombre coincida con la configuración en Jenkins
     }
@@ -75,6 +75,21 @@ pipeline {
                 echo 'Deploying...'
                 // Aquí puedes agregar tus comandos de despliegue, por ejemplo:
                 // sh 'kubectl apply -f deployment.yaml'
+            }
+        }
+    }
+    post {
+            success {
+               slackSend (channel: '#slack-notificaciones', message: "Pipeline exitoso: ${env.JOB_NAME} ${env.BUILD_NUMBER} - ${env.BUILD_URL}")
+            }
+            failure {
+                slackSend (channel: '#slack-notificaciones', message: "Pipeline fallido: ${env.JOB_NAME} ${env.BUILD_NUMBER} - ${env.BUILD_URL}")
+            }
+            unstable {
+                slackSend (channel: '#slack-notificaciones', message: "Pipeline inestable: ${env.JOB_NAME} ${env.BUILD_NUMBER} - ${env.BUILD_URL}")
+            }
+            aborted {
+                slackSend (channel: '#slack-notificaciones', message: "Pipeline abortado: ${env.JOB_NAME} ${env.BUILD_NUMBER} - ${env.BUILD_URL}")
             }
         }
     }
